@@ -1,6 +1,6 @@
 
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, redirect, render_template, url_for,request
+from flask import Flask, redirect, render_template, url_for,request,flash
 import urllib.request, urllib.parse
 from flask_migrate import Migrate
 
@@ -18,13 +18,6 @@ migrate = Migrate(app, db)
 
 
 
-def sendtelegram(params):
-    url = "https://api.telegram.org/bot5787281305:AAE1S8DSnMAyQuzAnXOHfxLq-iyvPwYJeAo/sendMessage?chat_id=-1001556929308&text=" + urllib.parse.quote(params)
-    content = urllib.request.urlopen(url).read()
-    print(content)
-    return content
-
-
 
 class Person(db.Model):
     id= db.Column(db.Integer, primary_key=True)
@@ -37,31 +30,19 @@ class Person(db.Model):
 
 
 
-@app.route('/', methods=['POST','GET'])
+@app.route('/index', methods=['POST','GET'])
 def home():
-    form = Form()
-    
-    
-    if form.validate_on_submit():
-            print('Success')
-            new =Person(name=form.name.data, 
-                        number=form.number.data, 
-                        comment=form.comment.data)
-            db.session.add(new)
-            db.session.commit()
-            print("New Program Added", "success")
-           
-            return redirect(url_for('/comment'))
-    else:
-        print(form.errors)
-    return render_template('index.html', form=form)
+    return render_template('index.html')
    
 
 @app.route('/comment')
 def comment():
-    persons=Person.query.order_by(Person.id.desc()).all()
-    print(persons)
-    return render_template("comment.html", persons=persons)
+    return render_template("comment.html")
+
+ 
+@app.route('/')
+def dashboard():
+    return render_template("home.html")
 
  
 

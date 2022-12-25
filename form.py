@@ -10,7 +10,8 @@ from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationE
 
 
 class Form(FlaskForm):
-    name = StringField('name', validators=[DataRequired()])
-    number = StringField('number', validators=[DataRequired()])
-    comment = StringField('comment', validators=[DataRequired()])
+    name = StringField('name')
+    number = StringField('number')
+    comment = StringField('comment')
     submit = SubmitField('submit')
+    
